@@ -1,27 +1,28 @@
 // タスクの新規追加ページ
 
 import { useState } from "react";
-import { uid } from "uid";
 import Link from "next/link";
+import { useRouter } from "next/router";
+import { addDoc, collection } from "firebase/firestore";
+import { db } from "../../firebase";
 
 export default function Create() {
   const [todo, setTodo] = useState("");
   const [detail, setDetail] = useState("");
-  const [todos, setTodos] = useState([]);
+  const router = useRouter();
 
   // 追加ボタンを押すと、配列（todos）にタスクを追加
-  const handleAddTodo = () => {
-    const uuid = uid();
+  const handleAddTodo = async () => {
     if (todo !== "") {
-      setTodos([
-        ...todos,
-        {
-          id: uuid,
-          todo: todo,
-          detail: detail,
-        },
-      ]);
-      console.log(todos);
+      // コレクションを参照
+      const collectionRef = collection(db, "todos");
+
+      // 追加したい内容を定義
+      const payload = { title: todo, detail: detail };
+
+      // addDocで追加（document idは、firebaseが自動生成）
+      await addDoc(collectionRef, payload);
+      router.push("/todos");
     }
   };
 
