@@ -27,7 +27,6 @@ export default function Detail() {
       <div>
         <h1>タイトル：{statedTodo.title}</h1>
         <h2>詳細：{statedTodo.detail}</h2>
-        <p>Doc id : {statedTodo.id}</p>
 
         {/* 編集ボタン */}
         <Link href="/todos/edit">
