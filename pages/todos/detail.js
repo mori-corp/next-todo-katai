@@ -25,11 +25,17 @@ export default function Detail() {
     <>
       <Header />
       <div className="p-6">
-        <h1 className="text-white text-xl">詳細ページ</h1>
-        {/* input field */}
-        <div>
-          <h1>タイトル：{statedTodo.title}</h1>
-          <h2>詳細：{statedTodo.detail}</h2>
+        <h1 className="text-white text-xl mb-2">詳細ページ</h1>
+        <hr />
+        <div className="mt-2">
+          <span className="text-sm text-slate-300">タイトル：</span>
+          <h1 className="bg-slate-800 py-4 px-2 mb-4 max-w-md rounded-sm">
+            {statedTodo.title}
+          </h1>
+          <span className="text-sm text-slate-300">詳細：</span>
+          <h2 className="bg-slate-800 py-4 px-2 max-w-md mb-4 rounded-sm">
+            {statedTodo.detail}
+          </h2>
 
           {/* 編集ボタン */}
           <Link href="/todos/edit">

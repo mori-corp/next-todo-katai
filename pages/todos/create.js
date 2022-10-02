@@ -30,17 +30,16 @@ export default function Create() {
   return (
     <>
       <Header />
-      <div className="p-4">
-        <div className="mb-4">
-          <h1>新しいTodoを作成</h1>
-        </div>
-        <div>
+      <div className="p-6">
+        <h1 className="text-xl mb-2">新規作成</h1>
+        <hr />
+        <div className="mt-2">
           {/* 新しいTODOの入力フォーム */}
           <label
             htmlFor="todoInput"
             className="block text-sm font-medium text-gray-900 mb-1 dark:text-gray-300"
           >
-            New Todo
+            タイトル：
           </label>
 
           <input
@@ -63,7 +62,7 @@ export default function Create() {
             htmlFor="detail"
             className="block text-sm font-medium text-gray-900 mb-1 dark:text-gray-300"
           >
-            Detail
+            詳細：
           </label>
           <textarea
             className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block p-2.5 mb-2 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
