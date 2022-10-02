@@ -5,7 +5,6 @@ import Link from "next/link";
 import { useRouter } from "next/router";
 import { addDoc, collection } from "firebase/firestore";
 import { db } from "../../firebase";
-import { uid } from "uid";
 
 export default function Create() {
   const [todo, setTodo] = useState("");
@@ -15,12 +14,11 @@ export default function Create() {
   // 追加ボタンを押すと、配列（todos）にタスクを追加
   const handleAddTodo = async () => {
     if (todo !== "") {
-      const uuid = uid();
       // コレクションを参照
       const collectionRef = collection(db, "todos");
 
       // 追加したい内容を定義
-      const payload = { id: uuid, title: todo, detail: detail };
+      const payload = { title: todo, detail: detail };
 
       // addDocで追加（document idは、firebaseが自動生成）
       await addDoc(collectionRef, payload);
