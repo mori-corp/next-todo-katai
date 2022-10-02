@@ -27,6 +27,7 @@ export default function Todos() {
   const handleDetailButtonClick = (todo) => {
     // set
     setStatedTodo({
+      id: todo.id,
       title: todo.title,
       detail: todo.detail,
     });
@@ -35,7 +36,7 @@ export default function Todos() {
   };
 
   return (
-    <div className="m-4">
+    <div className="p-6">
       <div className="flex mb-4">
         <h1 className="text-xl mr-3">Todos page</h1>
         <Link href="/todos/create">
@@ -55,7 +56,7 @@ export default function Todos() {
           {todos.map((todo) => (
             <li
               key={todo.id}
-              className="flex bg-black justify-between items-center p-2 mb-4 w-[70%]"
+              className="flex bg-slate-800 hover:bg-slate-700 justify-between items-center p-2 mb-4 min-w-[380px] max-w-[580px]"
             >
               <span>{todo.title}</span>
               <div className="flex items-center">
