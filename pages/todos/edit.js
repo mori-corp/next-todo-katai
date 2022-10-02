@@ -53,6 +53,7 @@ export default function Edit() {
               setUpdatedTodo(e.target.value);
             }}
             required
+            autoComplete="off"
           />
         </div>
 
