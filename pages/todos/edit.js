@@ -7,6 +7,7 @@ import { todoState } from "../../components/atoms";
 import { doc, setDoc } from "firebase/firestore";
 import { db } from "../../firebase";
 import { useRouter } from "next/router";
+import { Header } from "../../components/Header";
 
 export default function Edit() {
   const statedTodo = useRecoilValue(todoState);
@@ -26,72 +27,75 @@ export default function Edit() {
   };
 
   return (
-    <div className="p-4">
-      <div className="mb-4">
-        <h1>Todoを編集</h1>
-        <hr />
-      </div>
-      <div>
-        {/* 新しいTODOの入力フォーム */}
-        <label
-          htmlFor="todoInput"
-          className="block text-sm font-medium text-gray-900 mb-1 dark:text-gray-300"
-        >
-          Edit Todo
-        </label>
+    <>
+      <Header />
+      <div className="p-4">
+        <div className="mb-4">
+          <h1>Todoを編集</h1>
+          <hr />
+        </div>
+        <div>
+          {/* 新しいTODOの入力フォーム */}
+          <label
+            htmlFor="todoInput"
+            className="block text-sm font-medium text-gray-900 mb-1 dark:text-gray-300"
+          >
+            Edit Todo
+          </label>
 
-        <input
-          type="text"
-          id="todoInput"
-          className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block p-2.5 mb-2 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-          placeholder="TODOを編集"
-          value={updatedTodo}
-          onChange={(e) => {
-            setUpdatedTodo(e.target.value);
-          }}
-          required
-        />
-      </div>
+          <input
+            type="text"
+            id="todoInput"
+            className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block p-2.5 mb-2 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+            placeholder="TODOを編集"
+            value={updatedTodo}
+            onChange={(e) => {
+              setUpdatedTodo(e.target.value);
+            }}
+            required
+          />
+        </div>
 
-      {/* 新しいTODOの詳細入力フォーム */}
-      <div>
-        <label
-          htmlFor="detail"
-          className="block text-sm font-medium text-gray-900 mb-1 dark:text-gray-300"
-        >
-          Edit Detail
-        </label>
-        <textarea
-          className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block p-2.5 mb-2 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-          id="detail"
-          name="detail"
-          cols="30"
-          rows="3"
-          placeholder="詳細を入力してください"
-          value={updatedDetail}
-          onChange={(e) => {
-            setUpdatedDetail(e.target.value);
-          }}
-        />
-        <button
-          type="button"
-          className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-1.5 mr-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800"
-          onClick={() => {
-            handleEdit(statedTodo.id);
-          }}
-        >
-          編集
-        </button>
-
-        <Link href="/todos/detail">
+        {/* 新しいTODOの詳細入力フォーム */}
+        <div>
+          <label
+            htmlFor="detail"
+            className="block text-sm font-medium text-gray-900 mb-1 dark:text-gray-300"
+          >
+            Edit Detail
+          </label>
+          <textarea
+            className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block p-2.5 mb-2 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+            id="detail"
+            name="detail"
+            cols="30"
+            rows="3"
+            placeholder="詳細を入力してください"
+            value={updatedDetail}
+            onChange={(e) => {
+              setUpdatedDetail(e.target.value);
+            }}
+          />
           <button
             type="button"
-            className="px-5 py-1.5 mb-2 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-200 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700"
+            className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-1.5 mr-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800"
+            onClick={() => {
+              handleEdit(statedTodo.id);
+            }}
           >
-            戻る
+            編集
           </button>
-        </Link>
+
+          <Link href="/todos/detail">
+            <button
+              type="button"
+              className="px-5 py-1.5 mb-2 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-200 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700"
+            >
+              戻る
+            </button>
+          </Link>
+        </div>
       </div>
-    </div>
+    </>
   );
 }
