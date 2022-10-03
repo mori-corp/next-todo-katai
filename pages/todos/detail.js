@@ -1,3 +1,5 @@
+// タスクの詳細閲覧ページ
+
 import { deleteDoc, doc } from "firebase/firestore";
 import { db } from "../../firebase";
 import Link from "next/link";
@@ -7,7 +9,7 @@ import { useRouter } from "next/router";
 import { Header } from "../../components/Header";
 
 export default function Detail() {
-  // atomsより、todoの値を取得
+  // グローバル値を取得
   const statedTodo = useRecoilValue(todoState);
   const router = useRouter();
 
@@ -28,20 +30,27 @@ export default function Detail() {
         <h1 className="text-white text-xl mb-2">詳細ページ</h1>
         <hr />
         <div className="mt-2">
+          {/* タイトルの表示 */}
           <span className="text-sm text-slate-300">タイトル：</span>
           <h1 className="bg-slate-800 py-4 px-2 mb-4 max-w-md rounded-sm">
             {statedTodo.title}
           </h1>
+
+          {/* 詳細の表示 */}
           <span className="text-sm text-slate-300">詳細：</span>
           <h2 className="bg-slate-800 py-4 px-2 max-w-md mb-4 rounded-sm">
             {statedTodo.detail}
           </h2>
+
+          {/* ステータスの表示 */}
           <span className="text-sm text-slate-300">状態：</span>
           <h2 className="bg-slate-800 py-2 px-2 max-w-md mb-4 rounded-sm">
             {statedTodo.status === "waiting" && "未着手"}
             {statedTodo.status === "working" && "進行中"}
             {statedTodo.status === "completed" && "完了"}
           </h2>
+
+          {/* 最終更新日時の表示 */}
           <span className="text-sm text-slate-300">最終更新：</span>
           <h2 className="bg-slate-800 py-2 px-2 max-w-md mb-4 rounded-sm">
             {statedTodo.time}
@@ -66,6 +75,7 @@ export default function Detail() {
             削除
           </button>
 
+          {/* 戻るボタン */}
           <Link href="/todos">
             <button
               type="button"
