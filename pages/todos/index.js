@@ -1,3 +1,5 @@
+// TODO一覧ページ
+
 import { useState, useEffect } from "react";
 import { collection, onSnapshot } from "firebase/firestore";
 import { db } from "../../firebase";
@@ -5,6 +7,7 @@ import { useRecoilState } from "recoil";
 import { todoState } from "../../components/atoms";
 import { useRouter } from "next/router";
 import { Header } from "../../components/Header";
+import TodoRows from "../../components/TodoRows";
 
 export default function Todos() {
   const [todos, setTodos] = useState([{ title: "Loading ...", id: "initial" }]);
@@ -74,6 +77,7 @@ export default function Todos() {
       <Header />
       <div className="p-6">
         <div className="flex items-center mb-4">
+          {/* ソートセレクタ */}
           <span>ソート：</span>
           <select
             className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-[80px] h-[30px] p-1 mx-2 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
@@ -86,37 +90,15 @@ export default function Todos() {
           </select>
         </div>
 
-        {/* todo field */}
+        {/* todoの一覧表示 */}
         <div>
           <ul>
-            {/* firebaseに格納されているtodosを展開 */}
+            {/* firebaseに格納されているデータを展開 */}
             {filteredTodos.map((todo) => (
-              <li
-                key={todo.id}
-                className="flex bg-slate-800 hover:bg-slate-700 justify-between items-center p-2 mb-4 min-w-[380px] max-w-[580px] rounded-sm"
-              >
-                <span>{todo.title}</span>
-                <div className="flex items-center">
-                  {/* ステータスの表示 */}
-                  <span className="rounded-lg bg-[#111827] text-sm px-3 py-1.5 mr-2">
-                    {todo.status === "waiting" && "未着手"}
-                    {todo.status === "working" && "進行中"}
-                    {todo.status === "completed" && "完了"}
-                  </span>
-
-                  {/* 詳細ボタン */}
-                  <button
-                    type="button"
-                    className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-1.5 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800"
-                    onClick={() => {
-                      handleDetailButtonClick(todo);
-                    }}
-                  >
-                    詳細
-                  </button>
-                  {/* </Link> */}
-                </div>
-              </li>
+              <TodoRows
+                todo={todo}
+                onHandleDetailButtonClick={handleDetailButtonClick}
+              />
             ))}
           </ul>
         </div>
