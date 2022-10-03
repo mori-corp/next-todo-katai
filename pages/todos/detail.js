@@ -36,6 +36,10 @@ export default function Detail() {
           <h2 className="bg-slate-800 py-4 px-2 max-w-md mb-4 rounded-sm">
             {statedTodo.detail}
           </h2>
+          <span className="text-sm text-slate-300">最終更新：</span>
+          <h2 className="bg-slate-800 py-4 px-2 max-w-md mb-4 rounded-sm">
+            {statedTodo.time}
+          </h2>
 
           {/* 編集ボタン */}
           <Link href="/todos/edit">

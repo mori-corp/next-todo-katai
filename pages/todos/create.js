@@ -3,7 +3,7 @@
 import { useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import { addDoc, collection } from "firebase/firestore";
+import { addDoc, collection, serverTimestamp } from "firebase/firestore";
 import { db } from "../../firebase";
 import { Header } from "../../components/Header";
 
@@ -19,7 +19,11 @@ export default function Create() {
       const collectionRef = collection(db, "todos");
 
       // 追加したい内容を定義
-      const payload = { title: todo, detail: detail };
+      const payload = {
+        title: todo,
+        detail: detail,
+        timestamp: serverTimestamp(),
+      };
 
       // addDocで追加（document idは、firebaseが自動生成）
       await addDoc(collectionRef, payload);

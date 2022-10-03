@@ -4,7 +4,7 @@ import Link from "next/link";
 import { useState } from "react";
 import { useRecoilValue } from "recoil";
 import { todoState } from "../../components/atoms";
-import { doc, setDoc } from "firebase/firestore";
+import { doc, setDoc, serverTimestamp } from "firebase/firestore";
 import { db } from "../../firebase";
 import { useRouter } from "next/router";
 import { Header } from "../../components/Header";
@@ -20,7 +20,11 @@ export default function Edit() {
   // 編集ボタンをクリックした時の関数
   const handleEdit = (id) => {
     const docRef = doc(db, "todos", id);
-    const payload = { title: updatedTodo, detail: updatedDetail };
+    const payload = {
+      title: updatedTodo,
+      detail: updatedDetail,
+      timestamp: serverTimestamp(),
+    };
     setDoc(docRef, payload);
 
     router.push("/todos");

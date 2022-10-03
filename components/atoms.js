@@ -10,5 +10,6 @@ export const todoState = atom({
     id: "",
     title: "",
     detail: "",
+    time: {},
   },
 });
