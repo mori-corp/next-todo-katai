@@ -82,7 +82,7 @@ export default function Edit() {
               handleEdit(statedTodo.id);
             }}
           >
-            編集
+            更新
           </button>
 
           <Link href="/todos/detail">
