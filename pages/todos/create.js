@@ -22,6 +22,7 @@ export default function Create() {
       const payload = {
         title: todo,
         detail: detail,
+        status: "waiting",
         timestamp: serverTimestamp(),
       };
 

@@ -36,8 +36,14 @@ export default function Detail() {
           <h2 className="bg-slate-800 py-4 px-2 max-w-md mb-4 rounded-sm">
             {statedTodo.detail}
           </h2>
+          <span className="text-sm text-slate-300">状態：</span>
+          <h2 className="bg-slate-800 py-2 px-2 max-w-md mb-4 rounded-sm">
+            {statedTodo.status === "waiting" && "未着手"}
+            {statedTodo.status === "working" && "進行中"}
+            {statedTodo.status === "completed" && "完了"}
+          </h2>
           <span className="text-sm text-slate-300">最終更新：</span>
-          <h2 className="bg-slate-800 py-4 px-2 max-w-md mb-4 rounded-sm">
+          <h2 className="bg-slate-800 py-2 px-2 max-w-md mb-4 rounded-sm">
             {statedTodo.time}
           </h2>
 
