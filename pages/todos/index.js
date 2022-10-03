@@ -9,6 +9,8 @@ import { Header } from "../../components/Header";
 export default function Todos() {
   const [todos, setTodos] = useState([{ title: "Loading ...", id: "initial" }]);
   const [statedTodo, setStatedTodo] = useRecoilState(todoState);
+  const [filter, setFilter] = useState("all");
+  const [filteredTodos, setFilteredTodos] = useState([]);
 
   const router = useRouter();
 
@@ -39,42 +41,44 @@ export default function Todos() {
   };
 
   // ソート機能
-  // useEffect(() => {
-  //   const filteringTodos = () => {
-  //     switch (filter) {
-  //       // optionで"未完了"が選択された場合
-  //       case "waiting":
-  //         setFilteredTodos(todos.filter((todo) => todo.isCompleted === false));
-  //         break;
-  //       // optionで"進行中"が選択された場合
-  //       case "working":
-  //         setFilteredTodos(todos.filter((todo) => todo.isCompleted === true));
-  //         break;
-  //       // optionで"完了"が選択された場合
-  //       case "completed":
-  //         setFilteredTodos(todos.filter((todo) => todo.isCompleted === true));
-  //         break;
-  //       // optionで"すべて"が選択された場合
-  //       case "all":
-  //         setFilteredTodos(todos);
-  //         break;
-  //       // ここまで
-  //       default:
-  //         setFilteredTodos(todos);
-  //     }
-  //   };
-  //   // 関数の呼び出し
-  //   filteringTodos();
-  // }, [filter, todos]);
+  useEffect(() => {
+    const filteringTodos = () => {
+      switch (filter) {
+        // optionで"未完了"が選択された場合
+        case "waiting":
+          setFilteredTodos(todos.filter((todo) => todo.status === "waiting"));
+          break;
+        // optionで"進行中"が選択された場合
+        case "working":
+          setFilteredTodos(todos.filter((todo) => todo.status === "working"));
+          break;
+        // optionで"完了"が選択された場合
+        case "completed":
+          setFilteredTodos(todos.filter((todo) => todo.status === "completed"));
+          break;
+        // optionで"すべて"が選択された場合
+        case "all":
+          setFilteredTodos(todos);
+          break;
+        // ここまで
+        default:
+          setFilteredTodos(todos);
+      }
+    };
+    // 関数の呼び出し
+    filteringTodos();
+  }, [filter, todos]);
 
   return (
     <>
       <Header />
       <div className="p-6">
         <div className="flex items-center mb-4">
-          <h1 className="text-xl">トップ ページ</h1>
-          <span className="ml-4">ソート：</span>
-          <select className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-[80px] h-[30px] p-1 mx-2 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+          <span>ソート：</span>
+          <select
+            className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-[80px] h-[30px] p-1 mx-2 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+            onChange={(e) => setFilter(e.target.value)}
+          >
             <option value="all">すべて</option>
             <option value="waiting">未着手</option>
             <option value="working">進行中</option>
@@ -86,7 +90,7 @@ export default function Todos() {
         <div>
           <ul>
             {/* firebaseに格納されているtodosを展開 */}
-            {todos.map((todo) => (
+            {filteredTodos.map((todo) => (
               <li
                 key={todo.id}
                 className="flex bg-slate-800 hover:bg-slate-700 justify-between items-center p-2 mb-4 min-w-[380px] max-w-[580px] rounded-sm"
