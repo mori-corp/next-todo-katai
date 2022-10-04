@@ -10,19 +10,22 @@ import { Header } from "../../components/Header";
 import TodoRows from "../../components/TodoRows";
 
 export default function Todos() {
-  const [todos, setTodos] = useState([{ title: "Loading ...", id: "initial" }]);
+  const [todos, setTodos] = useState([]);
   const [statedTodo, setStatedTodo] = useRecoilState(todoState);
   const [filter, setFilter] = useState("all");
   const [filteredTodos, setFilteredTodos] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
 
   const router = useRouter();
 
   // firestoreの"todos" collectionの、各ドキュメントを読み込む
   useEffect(() => {
+    setIsLoading(true);
     // コレクション"todos"から、各ドキュメント（各todo）を展開
     const unsub = onSnapshot(collection(db, "todos"), (snapshot) => {
       // todosの配列にセット。ドキュメントのid番号を割り振り
       setTodos(snapshot.docs.map((doc) => ({ ...doc.data(), id: doc.id })));
+      setIsLoading(false);
     });
     return unsub;
   }, []);
@@ -94,13 +97,18 @@ export default function Todos() {
         <div>
           <ul>
             {/* firebaseに格納されているデータを展開 */}
-            {filteredTodos.map((todo) => (
-              <TodoRows
-                key={todo.id}
-                todo={todo}
-                onHandleDetailButtonClick={handleDetailButtonClick}
-              />
-            ))}
+
+            {isLoading ? (
+              <div>TODOを読み込んでいます ...</div>
+            ) : (
+              filteredTodos.map((todo) => (
+                <TodoRows
+                  key={todo.id}
+                  todo={todo}
+                  onHandleDetailButtonClick={handleDetailButtonClick}
+                />
+              ))
+            )}
           </ul>
         </div>
       </div>
