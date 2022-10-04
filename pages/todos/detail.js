@@ -1,5 +1,6 @@
 // タスクの詳細閲覧ページ
 
+import { useState } from "react";
 import { deleteDoc, doc } from "firebase/firestore";
 import { db } from "../../firebase";
 import Link from "next/link";
@@ -9,17 +10,21 @@ import { useRouter } from "next/router";
 import { Header } from "../../components/Header";
 
 export default function Detail() {
+  const [isDeleting, setIsDeleting] = useState(false);
   // グローバル値を取得
   const statedTodo = useRecoilValue(todoState);
   const router = useRouter();
 
   // 削除ボタンをクリックした時の関数
   const handleDelete = async (id) => {
+    setIsDeleting(true);
     // ドキュメントのを、Recoilで日っぱてきているstatedTodoのidで参照
     const docRef = doc(db, "todos", id); //第３引数は、document id
     // document（対象のTODO）を削除
     await deleteDoc(docRef);
     // /todosへ遷移
+
+    setIsDeleting(false);
     router.push("/todos");
   };
 
@@ -55,6 +60,13 @@ export default function Detail() {
           <h2 className="bg-slate-800 py-2 px-2 max-w-md mb-4 rounded-sm">
             {statedTodo.time}
           </h2>
+
+          {/* TODOを削除している間の表示 */}
+          {isDeleting && (
+            <div className="text-sm mb-2 text-slate-300">
+              TODOを削除しています ...
+            </div>
+          )}
 
           {/* 編集ボタン */}
           <Link href="/todos/edit">

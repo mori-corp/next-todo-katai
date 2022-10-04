@@ -13,9 +13,11 @@ export default function Create() {
   const [todo, setTodo] = useState("");
   const [detail, setDetail] = useState("");
   const router = useRouter();
+  const [isCreatingTodo, setIsCreatingTodo] = useState();
 
   // 追加ボタンをクリックした時の関数
   const handleAddTodo = async () => {
+    setIsCreatingTodo(true);
     if (todo !== "") {
       // コレクションを参照
       const collectionRef = collection(db, "todos");
@@ -30,6 +32,7 @@ export default function Create() {
       await addDoc(collectionRef, payload);
 
       router.push("/todos");
+      setIsCreatingTodo(false);
     }
   };
 
@@ -47,6 +50,13 @@ export default function Create() {
 
         {/* 新しいTODOの詳細入力フォーム */}
         <Textarea detail={detail} onSetDetail={setDetail} />
+
+        {/* 新しいTODOを作成中の表示 */}
+        {isCreatingTodo && (
+          <div className="text-sm mb-2 text-slate-300">
+            新規TODOを作成中 ...
+          </div>
+        )}
 
         {/* ボタン表示エリア */}
         <button
