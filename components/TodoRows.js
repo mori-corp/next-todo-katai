@@ -9,11 +9,25 @@ const TodoRows = ({ todo, onHandleDetailButtonClick }) => {
       <span>{todo.title}</span>
       <div className="flex items-center">
         {/* ステータスの表示 */}
-        <span className="rounded-lg bg-[#111827] text-sm px-3 py-1.5 mr-2">
-          {todo.status === "waiting" && "未着手"}
+        {/* <span className="rounded-lg bg-[#111827] text-sm px-3 py-1.5 mr-2">
           {todo.status === "working" && "進行中"}
           {todo.status === "completed" && "完了"}
-        </span>
+        </span> */}
+        {todo.status === "waiting" && (
+          <span className="rounded-lg bg-red-600 text-sm px-3 mr-2 py-1.5">
+            未着手
+          </span>
+        )}
+        {todo.status === "working" && (
+          <span className="rounded-lg bg-[#111827] text-sm px-3 mr-2 py-1.5">
+            進行中
+          </span>
+        )}
+        {todo.status === "completed" && (
+          <span className="rounded-lg bg-slate-500 text-sm px-4 mr-2 py-1.5">
+            完了
+          </span>
+        )}
 
         {/* 詳細ボタン */}
         <button
