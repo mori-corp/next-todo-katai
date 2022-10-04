@@ -97,10 +97,11 @@ export default function Todos() {
         <div>
           <ul>
             {/* firebaseに格納されているデータを展開 */}
-
+            {/* todoを読み込んでいる最中は、別表示 */}
             {isLoading ? (
               <div>TODOを読み込んでいます ...</div>
             ) : (
+              // 読み込まれた後に、todo一覧を表示
               filteredTodos.map((todo) => (
                 <TodoRows
                   key={todo.id}
