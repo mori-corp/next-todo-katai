@@ -96,6 +96,7 @@ export default function Todos() {
             {/* firebaseに格納されているデータを展開 */}
             {filteredTodos.map((todo) => (
               <TodoRows
+                key={todo.id}
                 todo={todo}
                 onHandleDetailButtonClick={handleDetailButtonClick}
               />
