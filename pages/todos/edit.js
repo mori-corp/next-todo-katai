@@ -4,7 +4,7 @@ import Link from "next/link";
 import { useState } from "react";
 import { useRecoilValue } from "recoil";
 import { todoState } from "../../components/atoms";
-import { doc, setDoc, serverTimestamp } from "firebase/firestore";
+import { doc, updateDoc, serverTimestamp } from "firebase/firestore";
 import { db } from "../../firebase";
 import { useRouter } from "next/router";
 import { Header } from "../../components/Header";
@@ -29,9 +29,8 @@ export default function Edit() {
       detail: updatedDetail,
       status: updatedStatus,
       timeUpdated: serverTimestamp(),
-      timeAdded: statedTodo.timeAdded,
     };
-    setDoc(docRef, payload);
+    updateDoc(docRef, payload);
 
     router.push("/todos");
   };
