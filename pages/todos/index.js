@@ -25,7 +25,7 @@ export default function Todos() {
     // firestoreから取得したドキュメント一覧を、追加時間の降順に並べ替え
     const q = query(collection(db, "todos"), orderBy("timeAdded", "desc"));
 
-    // 並べ替えたドキュメントをを展開
+    // 並べ替えたドキュメントを展開
     const unsub = onSnapshot(q, (snapshot) => {
       // todosの配列にセット。ドキュメントのid番号を割り振り
       setTodos(snapshot.docs.map((doc) => ({ ...doc.data(), id: doc.id })));
@@ -36,7 +36,7 @@ export default function Todos() {
 
   // 詳細ボタンをクリックした時の関数
   const handleDetailButtonClick = (todo) => {
-    // Recoilへset
+    // Recoilへセット
     setStatedTodo({
       id: todo.id,
       title: todo.title,
@@ -83,7 +83,7 @@ export default function Todos() {
       <Header />
       <div className="p-6">
         <div className="flex items-center mb-4">
-          {/* ソートセレクタ */}
+          {/* ソートセレクタ部分 */}
           <span>ソート：</span>
           <select
             className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-[80px] h-[30px] p-1 mx-2 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
@@ -100,11 +100,10 @@ export default function Todos() {
         <div>
           <ul>
             {/* firebaseに格納されているデータを展開 */}
-            {/* todoを読み込んでいる最中は、別表示 */}
             {isLoading ? (
+              // todoを読み込んでいる最中は、読み込み中を示す文言を表示
               <div>TODOを読み込んでいます ...</div>
             ) : (
-              // 読み込まれた後に、todo一覧を表示
               filteredTodos.map((todo) => (
                 <TodoRows
                   key={todo.id}

@@ -11,11 +11,12 @@ import { Header } from "../../components/Header";
 
 export default function Detail() {
   const [isDeleting, setIsDeleting] = useState(false);
-  // グローバル値を取得
+
+  // 各todoの「詳細ボタン」が押された時に、Recoilにセットされたグローバル値を取得
   const { id, title, detail, status, timeUpdated } = useRecoilValue(todoState);
   const router = useRouter();
 
-  // reoildより受け取ったserverTimeStampの値をtoDate()で変換し、見やすいようにyy/mm/dd/hh:mmへ変更
+  // recoilより受け取ったserverTimeStampの値をtoDate()で変換し、見やすいようにyy/mm/dd/hh:mmへ変更
   //月日時分を２桁表示にするため、頭に0をつけて２桁にする
   const year = timeUpdated.toDate().getFullYear();
   const month = ("0" + (timeUpdated.toDate().getMonth() + 1)).slice(-2);
@@ -27,14 +28,16 @@ export default function Detail() {
 
   // 削除ボタンをクリックした時の関数
   const handleDelete = async (id) => {
+    // isDeletingがtrueの間は、todo削除中に「todoを削除中 ...」の文言を表示
     setIsDeleting(true);
-    // ドキュメントのを、Recoilで日っぱてきているstatedTodoのidで参照
+
+    // firestoreのドキュメントを、RecoilでセットしているstatedTodoのidで参照
     const docRef = doc(db, "todos", id); //第３引数は、document id
     // document（対象のTODO）を削除
     await deleteDoc(docRef);
-    // /todosへ遷移
 
     setIsDeleting(false);
+    // /todosへ遷移
     router.push("/todos");
   };
 

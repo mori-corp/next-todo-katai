@@ -17,22 +17,26 @@ export default function Create() {
 
   // 追加ボタンをクリックした時の関数
   const handleAddTodo = async () => {
+    // isCreatingTodoがtrueの間は、todo作成中に「todoを作成中 ...」の文言を表示
     setIsCreatingTodo(true);
+
     if (todo !== "") {
-      // コレクションを参照
+      // firestoreのコレクションを参照
       const collectionRef = collection(db, "todos");
       // 追加したい内容を定義
       const payload = {
         title: todo,
         detail: detail,
         status: "waiting",
-        timeAdded : serverTimestamp(),
+        timeAdded: serverTimestamp(),
         timeUpdated: serverTimestamp(),
       };
       // 追加（document_idは、firebaseが自動生成）
       await addDoc(collectionRef, payload);
 
+      // 追加後、todo一覧画面へ遷移
       router.push("/todos");
+
       setIsCreatingTodo(false);
     }
   };
@@ -59,7 +63,7 @@ export default function Create() {
           </div>
         )}
 
-        {/* ボタン表示エリア */}
+        {/* 追加ボタン */}
         <button
           type="button"
           className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-1.5 mr-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800"
@@ -68,6 +72,7 @@ export default function Create() {
           追加
         </button>
 
+        {/* 戻るボタン */}
         <Link href="/todos">
           <button
             type="button"

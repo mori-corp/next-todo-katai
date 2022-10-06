@@ -14,24 +14,28 @@ import StatusSelector from "../../components/StatusSelector";
 
 export default function Edit() {
   const statedTodo = useRecoilValue(todoState);
-
-  const router = useRouter();
-
   const [updatedTodo, setUpdatedTodo] = useState(statedTodo.title);
   const [updatedDetail, setUpdatedDetail] = useState(statedTodo.detail);
   const [updatedStatus, setUpdatedStatus] = useState(statedTodo.status);
+  const router = useRouter();
 
   // 編集ボタンをクリックした時の関数
   const handleEdit = (id) => {
+    // firestoreのドキュメントの参照
     const docRef = doc(db, "todos", id);
+
+    // 編集内容を定義
     const payload = {
       title: updatedTodo,
       detail: updatedDetail,
       status: updatedStatus,
       timeUpdated: serverTimestamp(),
     };
+
+    //変更のあったプロパティのみ、ドキュメントをアップデート
     updateDoc(docRef, payload);
 
+    // /todosへ遷移
     router.push("/todos");
   };
 
@@ -62,6 +66,7 @@ export default function Edit() {
           />
         </div>
 
+        {/* 更新ボタン */}
         <button
           type="button"
           className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-1.5 mr-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800"
@@ -72,6 +77,7 @@ export default function Edit() {
           更新
         </button>
 
+        {/* 戻るボタン */}
         <Link href="/todos/detail">
           <button
             type="button"
