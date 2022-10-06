@@ -38,9 +38,10 @@ export default function Todos() {
       title: todo.title,
       detail: todo.detail,
       status: todo.status,
-      // timestampはオブジェクト形式でリターンされる{seconds: 1664761208, nanoseconds: 734000000}
-      // recoilにstring型として格納
-      time: String(todo.timestamp.toDate()), //Mon Oct 03 2022 10:40:08 GMT+0900 (日本標準時)形式で格納
+      // 追加日時をrecoilにオブジェクト形式で格納{seconds: 1664761208, nanoseconds: 734000000}
+      timeAdded: todo.timeAdded,
+      // 最終更新をrecoilにstring型として格納：Mon Oct 03 2022 10:40:08 GMT+0900 (日本標準時)形式
+      timeUpdated: String(todo.timeUpdated.toDate()),
     });
 
     router.push("/todos/detail");
