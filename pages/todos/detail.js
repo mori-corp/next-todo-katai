@@ -58,7 +58,7 @@ export default function Detail() {
           {/* 最終更新日時の表示 */}
           <span className="text-sm text-slate-300">最終更新：</span>
           <h2 className="bg-slate-800 py-2 px-2 max-w-md mb-4 rounded-sm">
-            {statedTodo.time}
+            {statedTodo.timeUpdated}
           </h2>
 
           {/* TODOを削除している間の表示 */}

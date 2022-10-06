@@ -26,7 +26,8 @@ export default function Create() {
         title: todo,
         detail: detail,
         status: "waiting",
-        timestamp: serverTimestamp(),
+        timeAdded : serverTimestamp(),
+        timeUpdated: serverTimestamp(),
       };
       // 追加（document_idは、firebaseが自動生成）
       await addDoc(collectionRef, payload);

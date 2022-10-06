@@ -4,7 +4,7 @@ import Link from "next/link";
 import { useState } from "react";
 import { useRecoilValue } from "recoil";
 import { todoState } from "../../components/atoms";
-import { doc, setDoc, serverTimestamp } from "firebase/firestore";
+import { doc, updateDoc, serverTimestamp } from "firebase/firestore";
 import { db } from "../../firebase";
 import { useRouter } from "next/router";
 import { Header } from "../../components/Header";
@@ -28,9 +28,9 @@ export default function Edit() {
       title: updatedTodo,
       detail: updatedDetail,
       status: updatedStatus,
-      timestamp: serverTimestamp(),
+      timeUpdated: serverTimestamp(),
     };
-    setDoc(docRef, payload);
+    updateDoc(docRef, payload);
 
     router.push("/todos");
   };
@@ -61,7 +61,7 @@ export default function Edit() {
             onSetUpdatedStatus={setUpdatedStatus}
           />
         </div>
-        
+
         <button
           type="button"
           className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-1.5 mr-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800"

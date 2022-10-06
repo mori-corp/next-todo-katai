@@ -1,7 +1,7 @@
 // TODO一覧ページ
 
 import { useState, useEffect } from "react";
-import { collection, onSnapshot } from "firebase/firestore";
+import { collection, onSnapshot, orderBy, query } from "firebase/firestore";
 import { db } from "../../firebase";
 import { useRecoilState } from "recoil";
 import { todoState } from "../../components/atoms";
@@ -21,8 +21,12 @@ export default function Todos() {
   // firestoreの"todos" collectionの、各ドキュメントを読み込む
   useEffect(() => {
     setIsLoading(true);
-    // コレクション"todos"から、各ドキュメント（各todo）を展開
-    const unsub = onSnapshot(collection(db, "todos"), (snapshot) => {
+
+    // firestoreから取得したドキュメント一覧を、追加時間の降順に並べ替え
+    const q = query(collection(db, "todos"), orderBy("timeAdded", "desc"));
+
+    // 並べ替えたドキュメントをを展開
+    const unsub = onSnapshot(q, (snapshot) => {
       // todosの配列にセット。ドキュメントのid番号を割り振り
       setTodos(snapshot.docs.map((doc) => ({ ...doc.data(), id: doc.id })));
       setIsLoading(false);
@@ -38,9 +42,10 @@ export default function Todos() {
       title: todo.title,
       detail: todo.detail,
       status: todo.status,
-      // timestampはオブジェクト形式でリターンされる{seconds: 1664761208, nanoseconds: 734000000}
-      // recoilにstring型として格納
-      time: String(todo.timestamp.toDate()), //Mon Oct 03 2022 10:40:08 GMT+0900 (日本標準時)形式で格納
+      // 追加日時をrecoilにオブジェクト形式で格納{seconds: 1664761208, nanoseconds: 734000000}
+      timeAdded: todo.timeAdded,
+      // 最終更新をrecoilにstring型として格納：Mon Oct 03 2022 10:40:08 GMT+0900 (日本標準時)形式
+      timeUpdated: String(todo.timeUpdated.toDate()),
     });
 
     router.push("/todos/detail");
