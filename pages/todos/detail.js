@@ -12,8 +12,18 @@ import { Header } from "../../components/Header";
 export default function Detail() {
   const [isDeleting, setIsDeleting] = useState(false);
   // グローバル値を取得
-  const statedTodo = useRecoilValue(todoState);
+  const { id, title, detail, status, timeUpdated } = useRecoilValue(todoState);
   const router = useRouter();
+
+  // reoildより受け取ったserverTimeStampの値をtoDate()で変換し、見やすいようにyy/mm/dd/hh:mmへ変更
+  //月日時分を２桁表示にするため、頭に0をつけて２桁にする
+  const year = timeUpdated.toDate().getFullYear();
+  const month = ("0" + (timeUpdated.toDate().getMonth() + 1)).slice(-2);
+  const date = ("0" + timeUpdated.toDate().getDate()).slice(-2);
+  const hour = ("0" + timeUpdated.toDate().getHours()).slice(-2);
+  const min = ("0" + timeUpdated.toDate().getMinutes()).slice(-2);
+
+  const displayTime = `${year}年${month}月${date}日 ${hour}:${min}`;
 
   // 削除ボタンをクリックした時の関数
   const handleDelete = async (id) => {
@@ -38,27 +48,27 @@ export default function Detail() {
           {/* タイトルの表示 */}
           <span className="text-sm text-slate-300">タイトル：</span>
           <h1 className="bg-slate-800 py-4 px-2 mb-4 max-w-md rounded-sm">
-            {statedTodo.title}
+            {title}
           </h1>
 
           {/* 詳細の表示 */}
           <span className="text-sm text-slate-300">詳細：</span>
           <h2 className="bg-slate-800 py-4 px-2 max-w-md mb-4 rounded-sm">
-            {statedTodo.detail}
+            {detail}
           </h2>
 
           {/* ステータスの表示 */}
           <span className="text-sm text-slate-300">状態：</span>
           <h2 className="bg-slate-800 py-2 px-2 max-w-md mb-4 rounded-sm">
-            {statedTodo.status === "waiting" && "未着手"}
-            {statedTodo.status === "working" && "進行中"}
-            {statedTodo.status === "completed" && "完了"}
+            {status === "waiting" && "未着手"}
+            {status === "working" && "進行中"}
+            {status === "completed" && "完了"}
           </h2>
 
           {/* 最終更新日時の表示 */}
           <span className="text-sm text-slate-300">最終更新：</span>
           <h2 className="bg-slate-800 py-2 px-2 max-w-md mb-4 rounded-sm">
-            {statedTodo.timeUpdated}
+            {displayTime}
           </h2>
 
           {/* TODOを削除している間の表示 */}
@@ -82,7 +92,7 @@ export default function Detail() {
           <button
             type="button"
             className="px-5 py-1.5 mb-2 mr-2 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-200 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700"
-            onClick={() => handleDelete(statedTodo.id)}
+            onClick={() => handleDelete(id)}
           >
             削除
           </button>

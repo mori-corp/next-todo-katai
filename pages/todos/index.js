@@ -42,10 +42,8 @@ export default function Todos() {
       title: todo.title,
       detail: todo.detail,
       status: todo.status,
-      // 追加日時をrecoilにオブジェクト形式で格納{seconds: 1664761208, nanoseconds: 734000000}
-      timeAdded: todo.timeAdded,
-      // 最終更新をrecoilにstring型として格納：Mon Oct 03 2022 10:40:08 GMT+0900 (日本標準時)形式
-      timeUpdated: String(todo.timeUpdated.toDate()),
+      // firestoreに格納してあるtimeUpdated（最終更新日時）をrecoilにオブジェクト形式で格納
+      timeUpdated: todo.timeUpdated,
     });
 
     router.push("/todos/detail");
