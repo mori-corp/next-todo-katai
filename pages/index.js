@@ -1,7 +1,17 @@
 import Head from "next/head";
 import Link from "next/link";
+import { useSession, signIn, signOut } from "next-auth/react";
 
 export default function Home() {
+  const { data: session } = useSession();
+  if (session) {
+    return (
+      <>
+        Signed in as {session.user.email} <br />
+        <button onClick={() => signOut()}>Sign out</button>
+      </>
+    );
+  }
   return (
     <div>
       <Head>
@@ -11,12 +21,15 @@ export default function Home() {
         <link href="/dist/output.css" rel="stylesheet"></link>
       </Head>
       <div>
-        <h1>認証ページ（未実装）</h1>
+        <p>Hello</p>
+        Not signed in <br />
+        <button onClick={() => signIn("google")}>Sign in</button>
+        {/* <h1>認証ページ（未実装）</h1>
         <Link href="/todos">
           <button className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-2 py-1.5 mt-4 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">
             TODOページへ
           </button>
-        </Link>
+        </Link> */}
       </div>
     </div>
   );
