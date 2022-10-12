@@ -3,24 +3,38 @@
 import { useState, useEffect } from "react";
 import { collection, onSnapshot, orderBy, query } from "firebase/firestore";
 import { db } from "../../firebase";
-import { useRecoilState } from "recoil";
+import { useRecoilState, useRecoilValue } from "recoil";
 import { todoState } from "../../components/atoms";
+import { userState } from "../../components/atoms";
 import { useRouter } from "next/router";
 import { Header } from "../../components/Header";
 import TodoRows from "../../components/TodoRows";
+import AddTodoButton from "../../components/AddTodoButton";
 
 export default function Todos() {
   const [todos, setTodos] = useState([]);
   const [statedTodo, setStatedTodo] = useRecoilState(todoState);
   const [filter, setFilter] = useState("all");
   const [filteredTodos, setFilteredTodos] = useState([]);
-  const [isLoading, setIsLoading] = useState(false);
+  const [isFetching, setFetching] = useState(false);
+  const { uid } = useRecoilValue(userState);
 
   const router = useRouter();
 
+  // もしログインしていない状態であれば、ログインページへ遷移
+  useEffect(() => {
+    if (uid === null) {
+      router.push("/login");
+    }
+  }, []);
+
   // firestoreの"todos" collectionの、各ドキュメントを読み込む
   useEffect(() => {
-    setIsLoading(true);
+    if (uid === null) {
+      router.push("/");
+    }
+
+    setFetching(true);
 
     // firestoreから取得したドキュメント一覧を、追加時間の降順に並べ替え
     const q = query(collection(db, "todos"), orderBy("timeAdded", "desc"));
@@ -29,7 +43,7 @@ export default function Todos() {
     const unsub = onSnapshot(q, (snapshot) => {
       // todosの配列にセット。ドキュメントのid番号を割り振り
       setTodos(snapshot.docs.map((doc) => ({ ...doc.data(), id: doc.id })));
-      setIsLoading(false);
+      setFetching(false);
     });
     return unsub;
   }, []);
@@ -94,13 +108,14 @@ export default function Todos() {
             <option value="working">進行中</option>
             <option value="completed">完了</option>
           </select>
+          <AddTodoButton />
         </div>
 
         {/* todoの一覧表示 */}
         <div>
           <ul>
             {/* firebaseに格納されているデータを展開 */}
-            {isLoading ? (
+            {isFetching ? (
               // todoを読み込んでいる最中は、読み込み中を示す文言を表示
               <div>TODOを読み込んでいます ...</div>
             ) : (

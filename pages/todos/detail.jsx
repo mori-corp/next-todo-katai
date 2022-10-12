@@ -1,6 +1,6 @@
 // タスクの詳細閲覧ページ
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { deleteDoc, doc } from "firebase/firestore";
 import { db } from "../../firebase";
 import Link from "next/link";
@@ -8,25 +8,33 @@ import { useRecoilValue } from "recoil";
 import { todoState } from "../../components/atoms";
 import { useRouter } from "next/router";
 import { Header } from "../../components/Header";
+import { userState } from "../../components/atoms";
 
 export default function Detail() {
   const [isDeleting, setIsDeleting] = useState(false);
-
+  const { uid, statedEmail } = useRecoilValue(userState);
   // 各todoの「詳細ボタン」が押された時に、Recoilにセットされたグローバル値を取得
   const { id, title, detail, status, timeUpdated } = useRecoilValue(todoState);
   const router = useRouter();
 
+  // もしログインしていない状態であれば、ログインページへ遷移
+  useEffect(() => {
+    if (uid === null) {
+      router.push("/login");
+    }
+  }, []);
+
   // recoilより受け取ったserverTimeStampの値をtoDate()で変換し、見やすいようにyy/mm/dd/hh:mmへ変更
   //月日時分を２桁表示にするため、頭に0をつけて２桁にする
   const getDisplayTime = () => {
-    if (timeUpdated === null) return
-      const year = timeUpdated.toDate().getFullYear();
-      const month = ("0" + (timeUpdated.toDate().getMonth() + 1)).slice(-2);
-      const date = ("0" + timeUpdated.toDate().getDate()).slice(-2);
-      const hour = ("0" + timeUpdated.toDate().getHours()).slice(-2);
-      const min = ("0" + timeUpdated.toDate().getMinutes()).slice(-2);
+    if (timeUpdated === null) return;
+    const year = timeUpdated.toDate().getFullYear();
+    const month = ("0" + (timeUpdated.toDate().getMonth() + 1)).slice(-2);
+    const date = ("0" + timeUpdated.toDate().getDate()).slice(-2);
+    const hour = ("0" + timeUpdated.toDate().getHours()).slice(-2);
+    const min = ("0" + timeUpdated.toDate().getMinutes()).slice(-2);
 
-      return `${year}年${month}月${date}日 ${hour}:${min}`;
+    return `${year}年${month}月${date}日 ${hour}:${min}`;
   };
 
   // 削除ボタンをクリックした時の関数

@@ -1,7 +1,7 @@
 // タスクの編集ページ
 
 import Link from "next/link";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useRecoilValue } from "recoil";
 import { todoState } from "../../components/atoms";
 import { doc, updateDoc, serverTimestamp } from "firebase/firestore";
@@ -11,13 +11,22 @@ import { Header } from "../../components/Header";
 import InputField from "../../components/InputFeild";
 import Textarea from "../../components/Textarea";
 import StatusSelector from "../../components/StatusSelector";
+import { userState } from "../../components/atoms";
 
 export default function Edit() {
   const statedTodo = useRecoilValue(todoState);
   const [updatedTodo, setUpdatedTodo] = useState(statedTodo.title);
   const [updatedDetail, setUpdatedDetail] = useState(statedTodo.detail);
   const [updatedStatus, setUpdatedStatus] = useState(statedTodo.status);
+  const { uid } = useRecoilValue(userState);
   const router = useRouter();
+
+  // もしログインしていない状態であれば、ログインページへ遷移
+  useEffect(() => {
+    if (uid === null) {
+      router.push("/login");
+    }
+  }, []);
 
   // 編集ボタンをクリックした時の関数
   const handleEdit = (id) => {

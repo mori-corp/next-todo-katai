@@ -14,3 +14,10 @@ export const todoState = atom({
     timeUpdated: null,
   },
 });
+
+export const userState = atom({
+  key: "user",
+  default: { uid: null, statedEmail: null },
+  // dangerouslyAllowMutability: true,
+  effects_UNSTABLE: [persistAtom],
+});

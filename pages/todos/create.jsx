@@ -1,6 +1,6 @@
 // タスクの新規追加ページ
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { addDoc, collection, serverTimestamp } from "firebase/firestore";
@@ -8,12 +8,22 @@ import { db } from "../../firebase";
 import { Header } from "../../components/Header";
 import InputField from "../../components/InputFeild";
 import Textarea from "../../components/Textarea";
+import { useRecoilValue } from "recoil";
+import { userState } from "../../components/atoms";
 
 export default function Create() {
   const [todo, setTodo] = useState("");
   const [detail, setDetail] = useState("");
   const router = useRouter();
   const [isCreatingTodo, setIsCreatingTodo] = useState();
+  const { uid, statedEmail } = useRecoilValue(userState);
+
+  // もしログインしていない状態であれば、ログインページへ遷移
+  useEffect(() => {
+    if (uid === null) {
+      router.push("/login");
+    }
+  }, []);
 
   // 追加ボタンをクリックした時の関数
   const handleAddTodo = async () => {
