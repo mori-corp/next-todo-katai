@@ -23,6 +23,7 @@ export default function Create() {
     if (uid === null) {
       router.push("/login");
     }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   // 追加ボタンをクリックした時の関数

@@ -26,6 +26,7 @@ export default function Todos() {
     if (uid === null) {
       router.push("/login");
     }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   // firestoreの"todos" collectionの、各ドキュメントを読み込む

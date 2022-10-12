@@ -19,6 +19,7 @@ export default function login() {
     if (uid !== null) {
       router.push("/todos");
     }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   /**

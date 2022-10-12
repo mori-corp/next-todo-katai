@@ -22,6 +22,7 @@ export default function Detail() {
     if (uid === null) {
       router.push("/login");
     }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   // recoilより受け取ったserverTimeStampの値をtoDate()で変換し、見やすいようにyy/mm/dd/hh:mmへ変更
