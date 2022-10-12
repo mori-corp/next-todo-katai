@@ -11,12 +11,12 @@ export default function login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [signInUser, setSignInUser] = useRecoilState(userState);
-  const { uid, statedEmail } = useRecoilValue(userState);
+  const { uid } = useRecoilValue(userState);
   const router = useRouter();
 
   // もしログイン状態であれば、/todosへ遷移させる
   useEffect(() => {
-    if (statedEmail !== null) {
+    if (uid !== null) {
       router.push("/todos");
     }
   }, []);

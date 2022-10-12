@@ -16,7 +16,7 @@ export default function Create() {
   const [detail, setDetail] = useState("");
   const router = useRouter();
   const [isCreatingTodo, setIsCreatingTodo] = useState();
-  const { uid, statedEmail } = useRecoilValue(userState);
+  const { uid } = useRecoilValue(userState);
 
   // もしログインしていない状態であれば、ログインページへ遷移
   useEffect(() => {

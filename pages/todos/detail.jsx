@@ -12,7 +12,7 @@ import { userState } from "../../components/atoms";
 
 export default function Detail() {
   const [isDeleting, setIsDeleting] = useState(false);
-  const { uid, statedEmail } = useRecoilValue(userState);
+  const { uid } = useRecoilValue(userState);
   // 各todoの「詳細ボタン」が押された時に、Recoilにセットされたグローバル値を取得
   const { id, title, detail, status, timeUpdated } = useRecoilValue(todoState);
   const router = useRouter();
