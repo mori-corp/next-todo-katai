@@ -18,13 +18,16 @@ export default function Detail() {
 
   // recoilより受け取ったserverTimeStampの値をtoDate()で変換し、見やすいようにyy/mm/dd/hh:mmへ変更
   //月日時分を２桁表示にするため、頭に0をつけて２桁にする
-  const year = timeUpdated.toDate().getFullYear();
-  const month = ("0" + (timeUpdated.toDate().getMonth() + 1)).slice(-2);
-  const date = ("0" + timeUpdated.toDate().getDate()).slice(-2);
-  const hour = ("0" + timeUpdated.toDate().getHours()).slice(-2);
-  const min = ("0" + timeUpdated.toDate().getMinutes()).slice(-2);
+  const getDisplayTime = () => {
+    if (timeUpdated === null) return
+      const year = timeUpdated.toDate().getFullYear();
+      const month = ("0" + (timeUpdated.toDate().getMonth() + 1)).slice(-2);
+      const date = ("0" + timeUpdated.toDate().getDate()).slice(-2);
+      const hour = ("0" + timeUpdated.toDate().getHours()).slice(-2);
+      const min = ("0" + timeUpdated.toDate().getMinutes()).slice(-2);
 
-  const displayTime = `${year}年${month}月${date}日 ${hour}:${min}`;
+      return `${year}年${month}月${date}日 ${hour}:${min}`;
+  };
 
   // 削除ボタンをクリックした時の関数
   const handleDelete = async (id) => {
@@ -71,7 +74,7 @@ export default function Detail() {
           {/* 最終更新日時の表示 */}
           <span className="text-sm text-slate-300">最終更新：</span>
           <h2 className="bg-slate-800 py-2 px-2 max-w-md mb-4 rounded-sm">
-            {displayTime}
+            {getDisplayTime()}
           </h2>
 
           {/* TODOを削除している間の表示 */}
