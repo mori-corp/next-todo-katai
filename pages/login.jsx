@@ -7,7 +7,7 @@ import { signInWithEmailAndPassword } from "firebase/auth";
 import { useRecoilState, useRecoilValue } from "recoil";
 import { useRouter } from "next/router/";
 
-export default function login() {
+export default function Login() { 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [signInUser, setSignInUser] = useRecoilState(userState);

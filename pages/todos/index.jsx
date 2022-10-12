@@ -31,10 +31,6 @@ export default function Todos() {
 
   // firestoreの"todos" collectionの、各ドキュメントを読み込む
   useEffect(() => {
-    if (uid === null) {
-      router.push("/");
-    }
-
     setFetching(true);
 
     // firestoreから取得したドキュメント一覧を、追加時間の降順に並べ替え
