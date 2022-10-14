@@ -1,24 +1,18 @@
 import React from "react";
 import { useRouter } from "next/router";
 import { auth } from "../firebase";
-import { useRecoilValue, useRecoilState } from "recoil";
-import { userState } from "../lib/auth";
+import { useSetRecoilState } from "recoil";
+import { userState } from "../lib/atoms";
 
 export const Header = () => {
   const router = useRouter();
-  const { uid, statedEmail } = useRecoilValue(userState);
-
-  const [user, setUser] = useRecoilState(userState);
+  const setUser = useSetRecoilState(userState);
   /**
    * ログアウトする
    */
   const handleLogOut = async () => {
     try {
-      setUser({
-        uid: null,
-        statedEmail: null,
-      });
-      console.log("logged out", uid, statedEmail);
+      setUser(null);
       await auth.signOut();
 
       router.push("/login");
@@ -35,8 +29,6 @@ export const Header = () => {
       >
         Next Todo
       </h1>
-      <span>{statedEmail} としてログインしています。</span>
-
       <div>
         <button className="mr-4" onClick={handleLogOut}>
           ログアウト

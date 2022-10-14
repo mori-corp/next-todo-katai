@@ -3,27 +3,27 @@
 import { useState, useEffect } from "react";
 import { collection, onSnapshot, orderBy, query } from "firebase/firestore";
 import { db } from "../../firebase";
-import { useRecoilState, useRecoilValue } from "recoil";
-import { userState } from "../../lib/auth";
-import { todoState } from "../../lib/auth";
+import { useSetRecoilState } from "recoil";
+import { todoState, useUser } from "../../lib/atoms";
 import { useRouter } from "next/router";
 import { Header } from "../../components/Header";
 import TodoRows from "../../components/TodoRows";
 import AddTodoButton from "../../components/AddTodoButton";
 
 export default function Todos() {
+  // lib/atoms.jsで定義したuseUser関数を使用し、認証user情報を、変数authUserへ代入
+  const authUser = useUser();
+  const router = useRouter();
+  const setStatedTodo = useSetRecoilState(todoState);
+
   const [todos, setTodos] = useState([]);
-  const [statedTodo, setStatedTodo] = useRecoilState(todoState);
   const [filter, setFilter] = useState("all");
   const [filteredTodos, setFilteredTodos] = useState([]);
   const [isFetching, setFetching] = useState(false);
-  const { uid } = useRecoilValue(userState);
 
-  const router = useRouter();
-
-  // firestoreの"todos" collectionの、各ドキュメントを読み込む
   useEffect(() => {
-    !uid && router.replace("/login");
+    // ログインしていない状態では、/loginへ自動遷移
+    authUser === null && router.push("/login");
     setFetching(true);
 
     // firestoreから取得したドキュメント一覧を、追加時間の降順に並べ替え
@@ -84,6 +84,7 @@ export default function Todos() {
 
   return (
     <>
+      {/* components/Header.jsx */}
       <Header />
       <div className="p-6">
         <div className="flex items-center mb-4">
@@ -118,6 +119,8 @@ export default function Todos() {
               ))
             )}
           </ul>
+          {/* グローバルに状態管理しているauthUser（onAuthStatusChange）のemailプロパティを参照 */}
+          <p>{authUser?.email}としてログインしています。</p>
         </div>
       </div>
     </>

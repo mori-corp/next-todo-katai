@@ -10,20 +10,20 @@ import { Header } from "../../components/Header";
 import InputField from "../../components/InputFeild";
 import Textarea from "../../components/Textarea";
 import StatusSelector from "../../components/StatusSelector";
-import { userState } from "../../lib/auth";
-import { todoState } from "../../lib/auth";
+import { todoState, useUser } from "../../lib/atoms";
 
 export default function Edit() {
   const statedTodo = useRecoilValue(todoState);
   const [updatedTodo, setUpdatedTodo] = useState(statedTodo.title);
   const [updatedDetail, setUpdatedDetail] = useState(statedTodo.detail);
   const [updatedStatus, setUpdatedStatus] = useState(statedTodo.status);
-  const { uid } = useRecoilValue(userState);
+
+  const authUser = useUser();
   const router = useRouter();
 
-  // もしログインしていない状態であれば、ログインページへ遷移
+  // ログインしていない状態では、/loginへ自動遷移
   useEffect(() => {
-    !uid && router.replace("/login");
+    authUser === null && router.push("/login");
   }, []);
 
   // 編集ボタンをクリックした時の関数

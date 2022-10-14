@@ -8,20 +8,19 @@ import { db } from "../../firebase";
 import { Header } from "../../components/Header";
 import InputField from "../../components/InputFeild";
 import Textarea from "../../components/Textarea";
-import { useRecoilValue } from "recoil";
-import { userState } from "../../lib/auth";
+import { useUser } from "../../lib/atoms";
 
 export default function Create() {
   const [todo, setTodo] = useState("");
   const [detail, setDetail] = useState("");
   const router = useRouter();
   const [isCreatingTodo, setIsCreatingTodo] = useState();
-  const { uid } = useRecoilValue(userState);
+  const authUser = useUser();
 
-  // もしログインしていない状態であれば、ログインページへ遷移
+  // ログインしていない状態では、/loginへ自動遷移
   useEffect(() => {
-    !uid && router.replace("/login");
-  }, []);
+    authUser === null && router.push("/login");
+  });
 
   // 追加ボタンをクリックした時の関数
   const handleAddTodo = async () => {

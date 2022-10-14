@@ -7,19 +7,18 @@ import Link from "next/link";
 import { useRecoilValue } from "recoil";
 import { useRouter } from "next/router";
 import { Header } from "../../components/Header";
-import { userState } from "../../lib/auth";
-import { todoState } from "../../lib/auth";
+import { useUser, todoState } from "../../lib/atoms";
 
 export default function Detail() {
   const [isDeleting, setIsDeleting] = useState(false);
-  const { uid } = useRecoilValue(userState);
   // 各todoの「詳細ボタン」が押された時に、Recoilにセットされたグローバル値を取得
   const { id, title, detail, status, timeUpdated } = useRecoilValue(todoState);
+  const authUser = useUser();
   const router = useRouter();
 
-  // もしログインしていない状態であれば、ログインページへ遷移
+  // ログインしていない状態では、/loginへ自動遷移
   useEffect(() => {
-    !uid && router.replace("/login");
+    authUser === null && router.push("/login");
   }, []);
 
   // recoilより受け取ったserverTimeStampの値をtoDate()で変換し、見やすいようにyy/mm/dd/hh:mmへ変更
