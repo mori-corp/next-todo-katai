@@ -2,12 +2,12 @@ import React from "react";
 import Link from "next/link";
 import { auth } from "../firebase";
 import { useState, useEffect } from "react";
-import { userState } from "../components/atoms";
+import { userState } from "../lib/auth";
 import { signInWithEmailAndPassword } from "firebase/auth";
 import { useRecoilState, useRecoilValue } from "recoil";
 import { useRouter } from "next/router/";
 
-export default function Login() { 
+export default function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [signInUser, setSignInUser] = useRecoilState(userState);
@@ -19,7 +19,7 @@ export default function Login() {
     if (uid !== null) {
       router.push("/todos");
     }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   /**

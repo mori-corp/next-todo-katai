@@ -9,7 +9,7 @@ import { Header } from "../../components/Header";
 import InputField from "../../components/InputFeild";
 import Textarea from "../../components/Textarea";
 import { useRecoilValue } from "recoil";
-import { userState } from "../../components/atoms";
+import { userState } from "../../lib/auth";
 
 export default function Create() {
   const [todo, setTodo] = useState("");
@@ -20,10 +20,7 @@ export default function Create() {
 
   // もしログインしていない状態であれば、ログインページへ遷移
   useEffect(() => {
-    if (uid === null) {
-      router.push("/login");
-    }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    !uid && router.replace("/login");
   }, []);
 
   // 追加ボタンをクリックした時の関数

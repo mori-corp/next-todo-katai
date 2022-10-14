@@ -4,8 +4,8 @@ import { useState, useEffect } from "react";
 import { collection, onSnapshot, orderBy, query } from "firebase/firestore";
 import { db } from "../../firebase";
 import { useRecoilState, useRecoilValue } from "recoil";
-import { todoState } from "../../components/atoms";
-import { userState } from "../../components/atoms";
+import { userState } from "../../lib/auth";
+import { todoState } from "../../lib/auth";
 import { useRouter } from "next/router";
 import { Header } from "../../components/Header";
 import TodoRows from "../../components/TodoRows";
@@ -21,16 +21,9 @@ export default function Todos() {
 
   const router = useRouter();
 
-  // もしログインしていない状態であれば、ログインページへ遷移
-  useEffect(() => {
-    if (uid === null) {
-      router.push("/login");
-    }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-
   // firestoreの"todos" collectionの、各ドキュメントを読み込む
   useEffect(() => {
+    !uid && router.replace("/login");
     setFetching(true);
 
     // firestoreから取得したドキュメント一覧を、追加時間の降順に並べ替え

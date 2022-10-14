@@ -1,7 +1,7 @@
 import { RecoilRoot } from "recoil";
 import "../styles/globals.css";
 
-function MyApp({ Component, pageProps: { session, ...pageProps } }) {
+function MyApp({ Component, pageProps: { ...pageProps } }) {
   return (
     <RecoilRoot>
       <Component {...pageProps} />

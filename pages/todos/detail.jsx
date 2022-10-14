@@ -5,10 +5,10 @@ import { deleteDoc, doc } from "firebase/firestore";
 import { db } from "../../firebase";
 import Link from "next/link";
 import { useRecoilValue } from "recoil";
-import { todoState } from "../../components/atoms";
 import { useRouter } from "next/router";
 import { Header } from "../../components/Header";
-import { userState } from "../../components/atoms";
+import { userState } from "../../lib/auth";
+import { todoState } from "../../lib/auth";
 
 export default function Detail() {
   const [isDeleting, setIsDeleting] = useState(false);
@@ -19,10 +19,7 @@ export default function Detail() {
 
   // もしログインしていない状態であれば、ログインページへ遷移
   useEffect(() => {
-    if (uid === null) {
-      router.push("/login");
-    }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    !uid && router.replace("/login");
   }, []);
 
   // recoilより受け取ったserverTimeStampの値をtoDate()で変換し、見やすいようにyy/mm/dd/hh:mmへ変更

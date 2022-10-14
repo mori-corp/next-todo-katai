@@ -1,9 +1,8 @@
 import React from "react";
 import { useRouter } from "next/router";
-import AddTodoButton from "./AddTodoButton";
 import { auth } from "../firebase";
 import { useRecoilValue, useRecoilState } from "recoil";
-import { userState } from "./atoms";
+import { userState } from "../lib/auth";
 
 export const Header = () => {
   const router = useRouter();

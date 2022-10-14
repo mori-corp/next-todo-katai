@@ -4,7 +4,7 @@ import { useState, useEffect } from "react";
 import { auth } from "../firebase";
 import { createUserWithEmailAndPassword } from "firebase/auth";
 import { useRecoilState, useRecoilValue } from "recoil";
-import { userState } from "../components/atoms";
+import { userState } from "../lib/auth";
 import { useRouter } from "next/router";
 
 export default function Home() {
@@ -16,10 +16,7 @@ export default function Home() {
 
   // もしログイン状態であれば、/todosへ遷移
   useEffect(() => {
-    if (uid !== null) {
-      router.push("/todos");
-    }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    uid && router.replace("/todos");
   }, []);
 
   /**

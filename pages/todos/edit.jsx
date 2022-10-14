@@ -3,7 +3,6 @@
 import Link from "next/link";
 import { useState, useEffect } from "react";
 import { useRecoilValue } from "recoil";
-import { todoState } from "../../components/atoms";
 import { doc, updateDoc, serverTimestamp } from "firebase/firestore";
 import { db } from "../../firebase";
 import { useRouter } from "next/router";
@@ -11,7 +10,8 @@ import { Header } from "../../components/Header";
 import InputField from "../../components/InputFeild";
 import Textarea from "../../components/Textarea";
 import StatusSelector from "../../components/StatusSelector";
-import { userState } from "../../components/atoms";
+import { userState } from "../../lib/auth";
+import { todoState } from "../../lib/auth";
 
 export default function Edit() {
   const statedTodo = useRecoilValue(todoState);
@@ -23,10 +23,7 @@ export default function Edit() {
 
   // もしログインしていない状態であれば、ログインページへ遷移
   useEffect(() => {
-    if (uid === null) {
-      router.push("/login");
-    }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    !uid && router.replace("/login");
   }, []);
 
   // 編集ボタンをクリックした時の関数
